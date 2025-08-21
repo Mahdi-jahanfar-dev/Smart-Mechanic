@@ -1,5 +1,5 @@
 from core.database_config import session, Base
-from sqlalchemy import Column, String, Integer, Boolean
+from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from passlib.context import CryptContext
 
 
@@ -18,6 +18,7 @@ class User(Base):
     last_name = Column(String(length=100))
     is_mechanic = Column(Boolean, default=False)
     password = Column(String(length=200))
+    registred_at = Column(DateTime,)
     
     def validate(self, entry_password):
         pwd_context.verify(entry_password, self.password)
