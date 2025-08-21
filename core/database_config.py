@@ -15,3 +15,11 @@ SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 session = SessionLocal()
 
 Base = declarative_base()
+
+
+def get_db():
+    db = session
+    try:
+        yield db
+    finally:
+        db.close()
