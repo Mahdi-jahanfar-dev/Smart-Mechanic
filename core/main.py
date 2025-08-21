@@ -1,10 +1,14 @@
 from fastapi import FastAPI
-from fastapi.responses import Response
+from .config import settings
+from accounts.models import User
+from .database_config import Base, engine
 
 
 app = FastAPI()
 
 
+Base.metadata.create_all(engine)
+
 @app.get("/")
 def test():
-    return {"message": "hi user this is test route"}
+    return {"message": f"hi user this is test route"}
