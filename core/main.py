@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.responses import Response
+from .config import settings
 
 
 app = FastAPI()
@@ -7,4 +7,4 @@ app = FastAPI()
 
 @app.get("/")
 def test():
-    return {"message": "hi user this is test route"}
+    return {"message": f"hi user this is test route"}
