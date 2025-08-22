@@ -1,7 +1,6 @@
-from core.database_config import session, Base
+from core.database_config import Base
 from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from passlib.context import CryptContext
-from sqlalchemy.orm import Session
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -24,6 +23,7 @@ class User(Base):
     registred_at = Column(
         DateTime,
     )
+    is_admin = Column(Boolean, default=False)
 
     def validate(self, entry_password):
         pwd_context.verify(entry_password, self.password)
