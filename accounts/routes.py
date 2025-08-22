@@ -1,11 +1,13 @@
-from fastapi import APIRouter
-from .models import User, Session
-from .schema import UserRegisterSchema
+from .models import User
+from sqlalchemy.orm import Session
+from .schema import UserRegisterSchema, UserLoginSchema
 from core.database_config import get_db
-from fastapi import Depends, status
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import HTTPException
 from datetime import datetime, timezone
 from .models import hash_password
+from .generate_jwt_tokens import generate_jwt_access_token, generate_jwt_refresh_token
 
 
 router = APIRouter(prefix="/account", tags=["account"])
@@ -31,4 +33,23 @@ async def user_register(data: UserRegisterSchema, db: Session = Depends(get_db))
     return JSONResponse(
         content={"message": f"user: {user.username} created"},
         status_code=status.HTTP_201_CREATED,
+    )
+
+
+@router.post("/login")
+async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
+    
+    user = db.query(User).filter_by(username = data.username).first()
+    
+    if not user or not user.validate(data.password):
+        raise HTTPException(detail="Invalid username or password", status_code=status.HTTP_401_UNAUTHORIZED)
+    
+    access_tokne = generate_jwt_access_token(user.id)
+    refresh_token = generate_jwt_refresh_token(user.id)
+    
+    return JSONResponse(
+        content={
+            "access_token": access_tokne,
+            "refresh_token": refresh_token
+        }
     )

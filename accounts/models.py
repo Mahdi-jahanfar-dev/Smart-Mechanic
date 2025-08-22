@@ -7,7 +7,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def hash_password(password: str) -> str:
-    pwd_context.hash(password)
+    return pwd_context.hash(password)
 
 
 class User(Base):
@@ -26,7 +26,7 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
 
     def validate(self, entry_password):
-        pwd_context.verify(entry_password, self.password)
+        return pwd_context.verify(entry_password, self.password)
 
     def __repr__(self):
         return self.username
