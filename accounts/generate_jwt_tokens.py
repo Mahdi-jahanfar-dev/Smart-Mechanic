@@ -29,7 +29,5 @@ def generate_jwt_refresh_token(user_id: int, exp_time: int = 1) -> str:
         "exp": now + timedelta(days=30),
     }
 
-    refresh_token = jwt.encode(
-        payload, key=settings.JWT_SECRET_KEY, algorithm="HS256"
-    )
+    refresh_token = jwt.encode(payload, key=settings.JWT_SECRET_KEY, algorithm="HS256")
     return refresh_token
