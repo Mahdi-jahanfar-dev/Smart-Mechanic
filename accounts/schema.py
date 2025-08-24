@@ -7,3 +7,8 @@ class UserRegisterSchema(BaseModel):
     last_name: str
     password: str
     is_mechanic: bool
+
+
+class UserLoginSchema(BaseModel):
+    username: str
+    password: str
