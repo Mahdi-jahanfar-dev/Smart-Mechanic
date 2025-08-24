@@ -37,11 +37,28 @@ The project allows two main types of users:
 - 🗄️ **Database:** SQLAlchemy with SQLite (for development)
 - 🧪 **Testing:** Pytest
 - 🔐 **Authentication:** JWT / OAuth (planned)
+- 🐳 **Dockerized:** The project runs in Docker using Docker Compose for easy development and deployment.
 
 ---
 
 ## 🔹 Project Status
 
-🚧 This is an early-stage project. Currently, it focuses on core functionalities such as user and mechanic registration, appointment management, and basic repair tracking. More advanced features like messaging between mechanics and users or advanced notifications will be considered in the future.
+🚧 This is an early-stage project. Currently, it focuses on core functionalities such as:
+
+- **User management:** The `accounts` app is fully implemented with user models, registration, and authentication.  
+- **Appointment management:** Booking and tracking repair appointments.  
+- **Docker support:** The project can be started with Docker Compose for a consistent development environment.  
+
+More advanced features like messaging between mechanics and users or advanced notifications will be considered in the future.
 
 ---
+
+## 🔹 Quick Start with Docker Compose
+
+This project is fully **dockerized** and can be run easily using Docker Compose.
+
+### 1️⃣ Build and start the containers
+From the root of the project, run:
+
+```bash
+docker-compose up -d --build
