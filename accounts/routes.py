@@ -1,6 +1,6 @@
 from .models import User
 from sqlalchemy.orm import Session
-from .schema import UserRegisterSchema, UserLoginSchema, UserRefreshToken
+from .schema import UserRegisterSchema, UserLoginSchema
 from core.database_config import get_db
 from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
