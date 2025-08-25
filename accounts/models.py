@@ -1,6 +1,7 @@
 from core.database_config import Base
 from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from passlib.context import CryptContext
+from sqlalchemy.orm import relationship
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -24,6 +25,8 @@ class User(Base):
         DateTime,
     )
     is_admin = Column(Boolean, default=False)
+    
+    cars = relationship("Car", back_populates="owner")
 
     def validate(self, entry_password):
         return pwd_context.verify(entry_password, self.password)
