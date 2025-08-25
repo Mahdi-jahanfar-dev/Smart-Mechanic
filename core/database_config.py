@@ -3,8 +3,9 @@ from sqlalchemy.orm import sessionmaker
 from .config import settings
 from sqlalchemy.orm import declarative_base
 
+DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORTS}/{settings.POSTGRES_DB}"
 
-engine = create_engine(settings.DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
