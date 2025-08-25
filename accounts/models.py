@@ -2,6 +2,8 @@ from core.database_config import Base
 from sqlalchemy import Column, String, Integer, Boolean, DateTime
 from passlib.context import CryptContext
 from sqlalchemy.orm import relationship
+from shops.models import MechanicShop
+from cars.models import Car
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -28,7 +30,7 @@ class User(Base):
     
     cars = relationship("Car", back_populates="owner")
     
-    mechanic_shop = relationship("MechanicShop", back_populates="mechanic_shop")
+    mechanic_shop = relationship("MechanicShop", back_populates="owner")
 
     def validate(self, entry_password):
         return pwd_context.verify(entry_password, self.password)

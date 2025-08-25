@@ -9,10 +9,9 @@ class Car(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     brand = Column(String)
     model = Column(String)
-    user_id = ForeignKey("users.id",)
+    user_id = Column(ForeignKey("users.id",))
     
     owner = relationship("User", back_populates="cars")
     
     def __repr__(self):
         return f'{self.owner.username}-{self.brand}-{self.model}'
-    
