@@ -3,6 +3,8 @@ from sqlalchemy import engine_from_config, pool
 from alembic import context
 from core.database_config import Base, DATABASE_URL
 from accounts.models import User
+from cars.models import Car
+from shops.models import MechanicShop
 import os
 
 
