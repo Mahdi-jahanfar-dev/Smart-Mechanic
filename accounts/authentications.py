@@ -41,24 +41,34 @@ def get_authenticated_user(
         )
 
 
-def get_access_token(credential: HTTPAuthorizationCredentials = Depends(security)) -> int:
-    
+def get_access_token(
+    credential: HTTPAuthorizationCredentials = Depends(security),
+) -> int:
+
     token = credential.credentials
-    
+
     try:
         decoded_token = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
-        
+
         if decoded_token["type"] != "refresh":
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token type")
-        
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token type"
+            )
+
         user_id = decoded_token["user_id"]
         return user_id
-        
+
     except jexceptions.ExpiredSignatureError:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="expired token")
-        
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="expired token"
+        )
+
     except jexceptions.InvalidSignatureError:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid signature")
-    
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid signature"
+        )
+
     except jexceptions.InvalidTokenError:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
+        )

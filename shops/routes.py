@@ -11,6 +11,8 @@ router = APIRouter(prefix="/shops", tags=["mechanic-shops"])
 
 
 @router.get("/list", response_model=List[MechanicShopsList])
-async def shops_list(db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
+async def shops_list(
+    db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)
+):
     shops = db.query(MechanicShop).all()
     return shops

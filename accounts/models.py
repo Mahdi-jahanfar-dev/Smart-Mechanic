@@ -27,9 +27,9 @@ class User(Base):
         DateTime,
     )
     is_admin = Column(Boolean, default=False)
-    
+
     cars = relationship("Car", back_populates="owner")
-    
+
     mechanic_shop = relationship("MechanicShop", back_populates="owner")
 
     def validate(self, entry_password):

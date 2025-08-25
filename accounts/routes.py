@@ -55,12 +55,12 @@ async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
         content={"access_token": access_tokne, "refresh_token": refresh_token}
     )
 
+
 @router.post("/token/refresh")
 async def refresh_token(user_id: int = Depends(get_access_token)):
-    
+
     access_token = generate_jwt_access_token(user_id)
-    
+
     return JSONResponse(
-        content={"access_token": access_token},
-        status_code=status.HTTP_201_CREATED
+        content={"access_token": access_token}, status_code=status.HTTP_201_CREATED
     )
