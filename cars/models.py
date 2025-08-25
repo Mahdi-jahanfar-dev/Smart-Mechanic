@@ -14,5 +14,5 @@ class Car(Base):
     owner = relationship("User", back_populates="cars")
     
     def __repr__(self):
-        return f'{self.owner}-{self.brand}-{self.model}'
+        return f'{self.owner.username}-{self.brand}-{self.model}'
     

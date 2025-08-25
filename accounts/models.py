@@ -27,6 +27,8 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
     
     cars = relationship("Car", back_populates="owner")
+    
+    mechanic_shop = relationship("MechanicShop", back_populates="mechanic_shop")
 
     def validate(self, entry_password):
         return pwd_context.verify(entry_password, self.password)
