@@ -1,7 +1,14 @@
 from pydantic import BaseModel
+from accounts.schema import UserSchema
 
 
-class MechanicShopsList(BaseModel):
+class MechanicShopsListSchema(BaseModel):
     name: str
-    owner: str
+    owner: UserSchema
+    address: str
+
+
+class MechanicCreateSchema(BaseModel):
+    name: str
+    description: str
     address: str
