@@ -15,10 +15,10 @@ class MechanicShop(Base):
 
     def __repr__(self):
         return f"{self.name}-{self.owner.username}"
-    
-    
+
+
 class MechanicReservation(Base):
-    
+
     __tablename__ = "resevations"
     id = Column(Integer, primary_key=True, autoincrement=True)
     date = Column(DateTime)

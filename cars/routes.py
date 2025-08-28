@@ -33,5 +33,3 @@ async def car_register(
     db.commit()
 
     return {"message": f"car {car.model} registred successfully"}
-
-

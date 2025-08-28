@@ -22,9 +22,8 @@ class MechanicDetailSchema(BaseModel):
     owner: UserSchema
 
 
-
 class MechanicResevationCreateSchema(BaseModel):
-    
+
     datetime: datetime
     car_id: int
     shop_id: int

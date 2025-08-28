@@ -13,7 +13,7 @@ class Car(Base):
         Integer,
         ForeignKey(
             "users.id",
-        )
+        ),
     )
 
     owner = relationship("User", back_populates="cars")
