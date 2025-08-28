@@ -2,12 +2,18 @@ from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
 from accounts.authentications import get_authenticated_user
 from accounts.models import User
-from .schema import MechanicShopsListSchema, MechanicCreateSchema, MechanicDetailSchema
+from .schema import (
+    MechanicShopsListSchema,
+    MechanicCreateSchema,
+    MechanicDetailSchema,
+    MechanicResevationCreateSchema,
+)
 from typing import List
 from sqlalchemy.orm import Session
-from .models import MechanicShop
+from .models import MechanicShop, MechanicReservation
 from core.database_config import get_db
 from sqlalchemy.exc import IntegrityError  # using for unique errors in db
+from cars.models import Car
 
 
 router = APIRouter(prefix="/shops", tags=["mechanic-shops"])
@@ -64,3 +70,34 @@ async def create_mechanic_shop(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="only mechanics can create mechanic shop",
     )
+
+
+@router.post("/Reservation/registration")
+async def resevation_create_route(
+    data: MechanicResevationCreateSchema,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_authenticated_user),
+):
+    reservation = MechanicReservation(**data.model_dump())
+    car = db.query(Car).filter_by(user_id=user_id).first()
+    if not car:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="just car owner can register resevation",
+        )
+    db.add(reservation)
+    db.commit()
+    return {
+        "message": f"Your mechanic shop reservation for date:{reservation.date} has been registered"
+    }
+
+
+@router.get("/resevations/list/{shop_id}")
+async def resevation_list_route(
+    shop_id: int,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_authenticated_user),
+):
+    resevations = db.query(MechanicReservation).filter_by(shop_id=shop_id).all()
+
+    return resevations
