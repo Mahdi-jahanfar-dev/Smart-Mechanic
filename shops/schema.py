@@ -24,6 +24,6 @@ class MechanicDetailSchema(BaseModel):
 
 class MechanicResevationCreateSchema(BaseModel):
 
-    datetime: datetime
+    date: datetime
     car_id: int
     shop_id: int
