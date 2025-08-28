@@ -10,6 +10,7 @@ class Car(Base):
     brand = Column(String)
     model = Column(String)
     user_id = Column(
+        Integer,
         ForeignKey(
             "users.id",
         )
