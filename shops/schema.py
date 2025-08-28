@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from accounts.schema import UserSchema
+from datetime import datetime
 
 
 class MechanicShopsListSchema(BaseModel):
@@ -19,3 +20,11 @@ class MechanicDetailSchema(BaseModel):
     description: str
     address: str
     owner: UserSchema
+
+
+
+class MechanicResevationCreateSchema(BaseModel):
+    
+    datetime: datetime
+    car_id: int
+    shop_id: int
