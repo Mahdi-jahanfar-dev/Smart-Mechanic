@@ -12,10 +12,10 @@ class MechanicCreateSchema(BaseModel):
     name: str
     description: str
     address: str
-
-
+    
 class MechanicDetailSchema(BaseModel):
     name: str
     description: str
     address: str
     owner: UserSchema
+    
