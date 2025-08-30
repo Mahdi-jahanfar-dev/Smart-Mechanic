@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, Text, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 
+# mechanic shop model
 class MechanicShop(Base):
 
     __tablename__ = "shops"
@@ -17,6 +18,7 @@ class MechanicShop(Base):
         return f"{self.name}-{self.owner.username}"
 
 
+# mechanic shop reservation model
 class MechanicReservation(Base):
 
     __tablename__ = "resevations"
@@ -25,3 +27,4 @@ class MechanicReservation(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     car_id = Column(Integer, ForeignKey("cars.id"))
     shop_id = Column(Integer, ForeignKey("shops.id"))
+    status = Column(String)

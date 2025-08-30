@@ -7,6 +7,7 @@ from .schema import (
     MechanicCreateSchema,
     MechanicDetailSchema,
     MechanicResevationCreateSchema,
+    MechanicChooseStatusSchema,
 )
 from typing import List
 from sqlalchemy.orm import Session
@@ -29,7 +30,7 @@ async def shops_list(
 
 
 # this route will return mechanic detail
-@router.get("/shop/{shop_id}", response_model=MechanicDetailSchema)
+@router.get("/{shop_id}", response_model=MechanicDetailSchema)
 async def shop_detail(
     shop_id: int,
     db: Session = Depends(get_db),
@@ -72,7 +73,8 @@ async def create_mechanic_shop(
     )
 
 
-@router.post("/Reservation/registration")
+# this route create a reservation for users
+@router.post("/reservation/registration")
 async def resevation_create_route(
     data: MechanicResevationCreateSchema,
     db: Session = Depends(get_db),
@@ -85,14 +87,41 @@ async def resevation_create_route(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="just car owner can register resevation",
         )
+
+    date_exist = db.query(MechanicReservation).filter_by(date=data.date).first()
+
+    if date_exist:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="This time is booked"
+        )
+
+    reservations = (
+        db.query(MechanicReservation)
+        .filter(
+            MechanicReservation.car_id == data.car_id,
+            MechanicReservation.status.notin_(["cancelled", "finished"]),
+        )
+        .first()
+    )
+    if reservations:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="this car is already in mechanic shop",
+        )
+
+    reservation.user_id = user_id
+    reservation.status = "pending"
+
     db.add(reservation)
     db.commit()
+
     return {
         "message": f"Your mechanic shop reservation for date:{reservation.date} has been registered"
     }
 
 
-@router.get("/resevations/list/{shop_id}")
+# this route will show the reservation list for each mechanic shop
+@router.get("/resevations/{shop_id}")
 async def resevation_list_route(
     shop_id: int,
     db: Session = Depends(get_db),
@@ -101,3 +130,40 @@ async def resevation_list_route(
     resevations = db.query(MechanicReservation).filter_by(shop_id=shop_id).all()
 
     return resevations
+
+
+# this route will change reservation status
+@router.post("/reservation/status/{reservation_id}")
+async def reservation_choose_status_route(
+    reservation_id: int,
+    data: MechanicChooseStatusSchema,
+    db: Session = Depends(get_db),
+    user_id: int = Depends(get_authenticated_user),
+):
+    user = db.query(User).filter_by(id=user_id).first()
+    if not user.is_mechanic:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="only mechanics can change reservation status",
+        )
+
+    reservation = db.query(MechanicReservation).filter_by(id=reservation_id).first()
+
+    if not reservation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="reservation with this detail not found",
+        )
+
+    if not user.mechanic_shop.id == reservation.shop_id:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="only mechanic shop owner can change reservation status",
+        )
+
+    reservation.status = data.status
+
+    db.commit()
+    db.refresh(reservation)
+
+    return {"message": "reservation status updated"}

@@ -14,6 +14,7 @@ from .authentications import get_access_token
 router = APIRouter(prefix="/account", tags=["account"])
 
 
+# register user route
 @router.post("/register")
 async def user_register(data: UserRegisterSchema, db: Session = Depends(get_db)):
 
@@ -37,6 +38,7 @@ async def user_register(data: UserRegisterSchema, db: Session = Depends(get_db))
     )
 
 
+# login user route
 @router.post("/login")
 async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
 
@@ -56,6 +58,7 @@ async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
     )
 
 
+# get access token from refresh token
 @router.post("/token/refresh")
 async def refresh_token(user_id: int = Depends(get_access_token)):
 
