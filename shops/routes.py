@@ -85,8 +85,17 @@ async def resevation_create_route(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="just car owner can register resevation",
         )
+
+    date_exist = db.query(MechanicReservation).filter_by(date=data["date"])
+
+    if date_exist:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="This time is booked"
+        )
+
     db.add(reservation)
     db.commit()
+
     return {
         "message": f"Your mechanic shop reservation for date:{reservation.date} has been registered"
     }

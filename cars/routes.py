@@ -36,6 +36,8 @@ async def car_register(
 
 
 @router.get("/list")
-async def cars_list_route(db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
-    cars = db.query(Car).filter_by(user_id = user_id).all()
+async def cars_list_route(
+    db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)
+):
+    cars = db.query(Car).filter_by(user_id=user_id).all()
     return cars
