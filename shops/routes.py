@@ -7,6 +7,7 @@ from .schema import (
     MechanicCreateSchema,
     MechanicDetailSchema,
     MechanicResevationCreateSchema,
+    MechanicChooseStatusSchema,
 )
 from typing import List
 from sqlalchemy.orm import Session
@@ -129,3 +130,25 @@ async def resevation_list_route(
     resevations = db.query(MechanicReservation).filter_by(shop_id=shop_id).all()
 
     return resevations
+
+
+@router.post("reservation/status/{reservation_id}")
+async def reservation_choose_status_route(reservation_id: int, data: MechanicChooseStatusSchema, db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
+    user = db.query(User).filter_by(id = user_id).first()
+    if not user.is_mechanic:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="only mechanics can change reservation status")
+    
+    reservation = db.query(MechanicReservation).filter_by(id = reservation_id).first()
+    
+    if not reservation:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="reservation with this detail not found")
+    
+    if not user.mechanic_shop.id == reservation.shop_id:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="only mechanic shop owner can change reservation status")
+
+    reservation.status = data.status
+    
+    db.commit()
+    db.refresh(reservation)
+    
+    return {"message": "reservation status updated"}

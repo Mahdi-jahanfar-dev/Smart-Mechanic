@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class CreateReservationStatus(str, Enum):
+class CreateReservationStatusEnum(str, Enum):
     pending = "pending"
     confirmed = "confirmed"
     repairing = "repairing"
