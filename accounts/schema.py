@@ -14,3 +14,9 @@ class UserRegisterSchema(BaseModel):
 class UserLoginSchema(BaseModel):
     username: str
     password: str
+
+
+# schema for use in other schemas to show user detail
+class UserSchema(BaseModel):
+    id: int
+    username: str
