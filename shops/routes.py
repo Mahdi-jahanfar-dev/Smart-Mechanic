@@ -72,7 +72,8 @@ async def create_mechanic_shop(
     )
 
 
-@router.post("/Reservation/registration")
+# this route create a reservation for users
+@router.post("/reservation/registration")
 async def resevation_create_route(
     data: MechanicResevationCreateSchema,
     db: Session = Depends(get_db),
@@ -85,13 +86,25 @@ async def resevation_create_route(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="just car owner can register resevation",
         )
+
+    date_exist = db.query(MechanicReservation).filter_by(date=data["date"])
+
+    if date_exist:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="This time is booked"
+        )
+        
+    reservation.user_id = user_id
+
     db.add(reservation)
     db.commit()
+
     return {
         "message": f"Your mechanic shop reservation for date:{reservation.date} has been registered"
     }
 
 
+# this route will show the reservation list for each mechanic shop
 @router.get("/resevations/list/{shop_id}")
 async def resevation_list_route(
     shop_id: int,
@@ -101,3 +114,16 @@ async def resevation_list_route(
     resevations = db.query(MechanicReservation).filter_by(shop_id=shop_id).all()
 
     return resevations
+
+
+# this route will show the list of car for each mechanic shop
+@router.get("/car/list/{shop_id}")
+async def list_of_mechanic_shop_cars(shop_id: int, db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
+    
+    user = db.query(User).filter_by(id = user_id).first()
+    
+    if user.is_mechanic:
+        
+        reservations = db.query(MechanicReservation).filter_by(shop_id = shop_id).all()
+        
+        return reservations

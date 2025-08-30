@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 
+# user car model
 class Car(Base):
 
     __tablename__ = "cars"

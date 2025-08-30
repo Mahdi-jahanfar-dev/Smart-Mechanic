@@ -1,6 +1,6 @@
 services:
 
-
+  # database container
   postgres_db:
     container_name: postgres_db
     image: postgres:15
@@ -12,6 +12,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  # project container
   core:
     container_name: core
     build: .
