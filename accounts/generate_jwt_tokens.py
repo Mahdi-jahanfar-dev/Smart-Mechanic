@@ -3,6 +3,7 @@ from datetime import datetime, timezone, timedelta
 from core.config import settings
 
 
+# this function will create access token for users
 def generate_jwt_access_token(user_id: int, exp_time: int = 30) -> str:
 
     now = datetime.now(timezone.utc)
@@ -18,6 +19,7 @@ def generate_jwt_access_token(user_id: int, exp_time: int = 30) -> str:
     return access_token
 
 
+# this function will create refresh token for users
 def generate_jwt_refresh_token(user_id: int, exp_time: int = 1) -> str:
 
     now = datetime.now(timezone.utc)

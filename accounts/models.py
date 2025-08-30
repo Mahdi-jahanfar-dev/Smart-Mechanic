@@ -9,10 +9,12 @@ from cars.models import Car
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
+# def for hashing passwords
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 
+# user model
 class User(Base):
 
     __tablename__ = "users"

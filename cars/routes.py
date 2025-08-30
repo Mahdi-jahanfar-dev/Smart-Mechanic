@@ -11,6 +11,7 @@ from .models import Car
 router = APIRouter(prefix="/cars", tags=["cars"])
 
 
+# this route will register the user cars
 @router.post("/register")
 async def car_register(
     data: CarRegisterSchema,
@@ -35,6 +36,7 @@ async def car_register(
     return {"message": f"car {car.model} registred successfully"}
 
 
+# this route will show the list of user cars
 @router.get("/list")
 async def cars_list_route(
     db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)

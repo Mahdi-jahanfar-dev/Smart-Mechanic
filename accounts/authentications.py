@@ -9,6 +9,7 @@ from jwt import exceptions as jexceptions
 security = HTTPBearer()
 
 
+# this function will check user authentication and return user_id
 def get_authenticated_user(
     cerdential: HTTPAuthorizationCredentials = Depends(security),
 ) -> int:
@@ -41,6 +42,7 @@ def get_authenticated_user(
         )
 
 
+# this function will create access token from refresh token
 def get_access_token(
     credential: HTTPAuthorizationCredentials = Depends(security),
 ) -> int:

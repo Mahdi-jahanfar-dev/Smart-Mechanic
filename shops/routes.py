@@ -72,6 +72,7 @@ async def create_mechanic_shop(
     )
 
 
+# this route create a reservation for users
 @router.post("/Reservation/registration")
 async def resevation_create_route(
     data: MechanicResevationCreateSchema,
@@ -101,6 +102,7 @@ async def resevation_create_route(
     }
 
 
+# this route will show the reservation list for each mechanic shop
 @router.get("/resevations/list/{shop_id}")
 async def resevation_list_route(
     shop_id: int,
