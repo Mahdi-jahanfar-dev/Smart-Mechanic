@@ -93,6 +93,8 @@ async def resevation_create_route(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="This time is booked"
         )
+        
+    reservation.user_id = user_id
 
     db.add(reservation)
     db.commit()
