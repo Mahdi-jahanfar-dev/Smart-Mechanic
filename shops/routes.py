@@ -93,8 +93,23 @@ async def resevation_create_route(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="This time is booked"
         )
-        
+
+    reservations = (
+        db.query(MechanicReservation)
+        .filter(
+            MechanicReservation.car_id == data.car_id,
+            MechanicReservation.status.notin_(["cancelled", "finished"]),
+        )
+        .first()
+    )
+    if reservations:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="this car is already in mechanic shop",
+        )
+
     reservation.user_id = user_id
+    reservation.status = "pending"
 
     db.add(reservation)
     db.commit()
