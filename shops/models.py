@@ -27,3 +27,4 @@ class MechanicReservation(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     car_id = Column(Integer, ForeignKey("cars.id"))
     shop_id = Column(Integer, ForeignKey("shops.id"))
+    status = Column(String)
