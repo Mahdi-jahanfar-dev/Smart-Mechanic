@@ -133,7 +133,7 @@ async def resevation_list_route(
 
 
 # this route will change reservation status
-@router.post("reservation/status/{reservation_id}")
+@router.post("/reservation/status/{reservation_id}")
 async def reservation_choose_status_route(
     reservation_id: int,
     data: MechanicChooseStatusSchema,
