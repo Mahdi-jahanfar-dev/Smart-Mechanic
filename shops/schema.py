@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from accounts.schema import UserSchema
 from datetime import datetime
+from core.enum import CreateReservationStatusEnum
 
 
 # schema for showing the list of mechanics
@@ -27,7 +28,10 @@ class MechanicDetailSchema(BaseModel):
 
 # schema for register mechanic reservation
 class MechanicResevationCreateSchema(BaseModel):
-
     date: datetime
     car_id: int
     shop_id: int
+
+
+class MechanicChooseStatusSchema(BaseModel):
+    status: CreateReservationStatusEnum
