@@ -31,7 +31,7 @@ class MechanicResevationCreateSchema(BaseModel):
     date: datetime
     car_id: int
     shop_id: int
-    
+
 
 class MechanicChooseStatusSchema(BaseModel):
     status: CreateReservationStatusEnum
