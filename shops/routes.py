@@ -29,7 +29,7 @@ async def shops_list(
 
 
 # this route will return mechanic detail
-@router.get("/shop/{shop_id}", response_model=MechanicDetailSchema)
+@router.get("/{shop_id}", response_model=MechanicDetailSchema)
 async def shop_detail(
     shop_id: int,
     db: Session = Depends(get_db),
@@ -87,7 +87,7 @@ async def resevation_create_route(
             detail="just car owner can register resevation",
         )
 
-    date_exist = db.query(MechanicReservation).filter_by(date=data["date"])
+    date_exist = db.query(MechanicReservation).filter_by(date=data.date).first()
 
     if date_exist:
         raise HTTPException(
@@ -105,7 +105,7 @@ async def resevation_create_route(
 
 
 # this route will show the reservation list for each mechanic shop
-@router.get("/resevations/list/{shop_id}")
+@router.get("/resevations/{shop_id}")
 async def resevation_list_route(
     shop_id: int,
     db: Session = Depends(get_db),
@@ -114,16 +114,3 @@ async def resevation_list_route(
     resevations = db.query(MechanicReservation).filter_by(shop_id=shop_id).all()
 
     return resevations
-
-
-# this route will show the list of car for each mechanic shop
-@router.get("/car/list/{shop_id}")
-async def list_of_mechanic_shop_cars(shop_id: int, db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
-    
-    user = db.query(User).filter_by(id = user_id).first()
-    
-    if user.is_mechanic:
-        
-        reservations = db.query(MechanicReservation).filter_by(shop_id = shop_id).all()
-        
-        return reservations
