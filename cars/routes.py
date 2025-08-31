@@ -57,6 +57,12 @@ async def accept_repair_route(reservation_id: int, data: AcceptCarRepairSchema, 
             detail="only reservation owner can user this route",
         )
     
+    if not reservation.status == "finished":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="repairing not finished",
+        )
+    
     if reservation.status == "received":
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
