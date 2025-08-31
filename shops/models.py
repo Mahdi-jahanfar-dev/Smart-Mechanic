@@ -29,3 +29,4 @@ class MechanicReservation(Base):
     shop_id = Column(Integer, ForeignKey("shops.id"))
     status = Column(String)
     rating = Column(Integer)
+    description = Column(Text)
