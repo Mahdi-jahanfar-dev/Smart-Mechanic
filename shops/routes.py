@@ -116,7 +116,7 @@ async def resevation_create_route(
     db.commit()
 
     return {
-        "message": f"Your mechanic shop reservation for date:{reservation.date} has been registered"
+        "message": f"Your mechanic shop reservation for date:{reservation.date} has been registered status : pending"
     }
 
 
