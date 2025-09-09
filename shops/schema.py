@@ -33,5 +33,6 @@ class MechanicResevationCreateSchema(BaseModel):
     shop_id: int
 
 
+# this schema using enum for choose status
 class MechanicChooseStatusSchema(BaseModel):
     status: CreateReservationStatusEnum

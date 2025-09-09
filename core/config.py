@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 
 
+# settings instance
 class Settings(BaseSettings):
 
     JWT_SECRET_KEY: str
