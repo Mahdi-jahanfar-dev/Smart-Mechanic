@@ -46,6 +46,7 @@ async def cars_list_route(
     return cars
 
 
+# with this route user will accept repairing if car repaired
 @router.post("/accept-repair/{reservation_id}")
 async def accept_repair_route(reservation_id: int, data: AcceptCarRepairSchema, db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
     
@@ -55,6 +56,12 @@ async def accept_repair_route(reservation_id: int, data: AcceptCarRepairSchema, 
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="only reservation owner can user this route",
+        )
+    
+    if not reservation.status == "finished":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="repairing not finished",
         )
     
     if reservation.status == "received":
