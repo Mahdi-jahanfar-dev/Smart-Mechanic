@@ -169,6 +169,7 @@ async def reservation_choose_status_route(
     return {"message": "reservation status updated"}
 
 
+# this function will show users reservations
 @router.get("/user/reservations")
 async def user_reservations_list(db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
     
