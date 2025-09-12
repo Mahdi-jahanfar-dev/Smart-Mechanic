@@ -12,7 +12,7 @@ class CreateReservationStatusEnum(str, Enum):
 
 # enum for rating
 class CarRepairRatingEnum(int, Enum):
-    
+
     bad = 1
     normal = 2
     good = 3
