@@ -11,6 +11,6 @@ class CarRegisterSchema(BaseModel):
 
 # schema for accept car repair
 class AcceptCarRepairSchema(BaseModel):
-    
+
     repaired: bool
     rating: CarRepairRatingEnum

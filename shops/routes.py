@@ -171,16 +171,18 @@ async def reservation_choose_status_route(
 
 # this function will show users reservations
 @router.get("/user/reservations")
-async def user_reservations_list(db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)):
-    
-    user = db.query(User).filter_by(id = user_id).first()
-    
+async def user_reservations_list(
+    db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)
+):
+
+    user = db.query(User).filter_by(id=user_id).first()
+
     if user.is_mechanic:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="only normal users can use this route",
         )
-        
-    reservations = db.query(MechanicReservation).filter_by(user_id = user_id).all()
-    
+
+    reservations = db.query(MechanicReservation).filter_by(user_id=user_id).all()
+
     return reservations
