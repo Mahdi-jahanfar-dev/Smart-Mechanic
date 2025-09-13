@@ -13,8 +13,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   # project container
-  core:
-    container_name: core
+  app:
+    container_name: app
     build: .
     ports:
       - "8000:8000"
@@ -23,9 +23,9 @@ services:
       - postgres_db
     
     volumes:
-      - .:/core
+      - .:/app
 
-    working_dir: /core
+    working_dir: /app
     
     command: ["uvicorn", "core.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
