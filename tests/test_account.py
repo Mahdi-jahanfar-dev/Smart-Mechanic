@@ -18,3 +18,30 @@ def test_register(client_instance):
 
     assert response.status_code == 201
     
+
+# test for registred user login route
+def test_user_registred_login(client_instance):
+    
+    response = client_instance.post(
+        "/account/login",
+        json={
+            "username": "test_user",
+            "password": "123456"
+        }
+    )
+    
+    assert response.status_code == 200
+
+
+# test for not registred user login route
+def test_user_not_registred_login(client_instance):
+    
+    response = client_instance.post(
+        "/account/login",
+        json={
+            "username": "test_user",
+            "password": "12345566"
+        }
+    )
+    
+    assert response.status_code == 401
