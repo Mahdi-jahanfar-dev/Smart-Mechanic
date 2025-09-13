@@ -54,7 +54,8 @@ async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
     refresh_token = generate_jwt_refresh_token(user.id)
 
     return JSONResponse(
-        content={"access_token": access_tokne, "refresh_token": refresh_token}
+        content={"access_token": access_tokne, "refresh_token": refresh_token},
+        status_code=status.HTTP_200_OK
     )
 
 
