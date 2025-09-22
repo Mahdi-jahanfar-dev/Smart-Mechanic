@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status
+from fastapi.responses import JSONResponse
 from accounts.authentications import get_authenticated_user
 from core.database_config import get_db
 from .schema import CarRegisterSchema, AcceptCarRepairSchema
@@ -34,7 +35,9 @@ async def car_register(
     db.add(car)
     db.commit()
 
-    return {"message": f"car {car.model} registred successfully"}
+    return JSONResponse(
+        content={"message": f"car {car.model} registred successfully"}, status_code=201
+    )
 
 
 # this route will show the list of user cars
