@@ -55,7 +55,7 @@ async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
 
     return JSONResponse(
         content={"access_token": access_tokne, "refresh_token": refresh_token},
-        status_code=status.HTTP_200_OK
+        status_code=status.HTTP_200_OK,
     )
 
 
