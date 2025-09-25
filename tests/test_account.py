@@ -1,7 +1,3 @@
-from conftest import client_instance
-from datetime import datetime
-
-
 # test for user registration route
 def test_register(client_instance):
 
@@ -16,7 +12,19 @@ def test_register(client_instance):
         },
     )
 
+    response_2 = client_instance.post(
+        "/account/register",
+        json={
+            "username": "test_user",
+            "first_name": "tester",
+            "last_name": "jahanfar",
+            "password": "123456",
+            "is_mechanic": True,
+        },
+    )
+
     assert response.status_code == 201
+    assert response_2.status_code == 201
 
 
 # test for registred user login route
