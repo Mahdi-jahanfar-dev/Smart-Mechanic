@@ -49,11 +49,108 @@ class BasicProblemModel(Base):
         return f"{self.car.brand}-{self.car.model}-{self.description}"
 
 
+# motor problem model (for problems like overheating, oil leak, etc.)
+class MotorProblemModel(Base):
+    __tablename__ = "motor_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String)
+    overheating = Column(Boolean, default=False)
+    oil_leak = Column(Boolean, default=False)
+    strange_noises = Column(Boolean, default=False)
+
+    main_problem_id = Column(
+        Integer,
+        ForeignKey(
+            "main_problems.id",
+        ),
+    )
+
+    main_prob = relationship(
+        "MainProblemModel",
+        backref=backref("motor_problems", cascade="all, delete-orphan"),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
+
+
+# transmission automatic problem model (for problems like harsh shifting, fluid leak, etc.)
+class TransmissionAutomaticProblemModel(Base):
+    __tablename__ = "transmission_automatic_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String)
+    harsh_shifting = Column(Boolean, default=False)
+    transmission_fluid_leak = Column(Boolean, default=False)
+    delayed_acceleration = Column(Boolean, default=False)
+
+    main_transmission_problem = Column(
+        Integer,
+        ForeignKey(
+            "main_transmission_problems.id",
+        ),
+    )
+
+    main_transmission_prob = relationship(
+        "MainProblemModel",
+        backref=backref(
+            "transmission_automatic_problems", cascade="all, delete-orphan"
+        ),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
+
+
+# transmission manual problem model (for problems like difficulty shifting, clutch slip, etc.)
+class TransmissionManualProblemModel(Base):
+    __tablename__ = "transmission_manual_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String)
+    difficulty_shifting = Column(Boolean, default=False)
+    clutch_slip = Column(Boolean, default=False)
+    grinding_noises = Column(Boolean, default=False)
+
+    main_transmission_problem = Column(
+        Integer,
+        ForeignKey(
+            "main_transmission_problems.id",
+        ),
+    )
+
+    main_transmission_prob = relationship(
+        "MainProblemModel",
+        backref=backref("transmission_manual_problems", cascade="all, delete-orphan"),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
+
+
+# transmission main problem model (this model will have relationship with both automatic and manual transmission problem models)
+class TransmissionMainProblemModel(Base):
+    __tablename__ = "main_transmission_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+
+    main_problem_id = Column(
+        Integer,
+        ForeignKey(
+            "main_problems.id",
+        ),
+    )
+
+    main_prob = relationship(
+        "MainProblemModel",
+        backref=backref("transmission_problems", cascade="all, delete-orphan"),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
+
+
 # main problem model (this model will have relationship with all other problem models)
 class MainProblemModel(Base):
     __tablename__ = "main_problems"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    description = Column(String)
     car_id = Column(
         Integer,
         ForeignKey(
