@@ -31,6 +31,7 @@ class MechanicReservation(Base):
     rating = Column(Integer)
     description = Column(Text)
 
+
 # the price for each service
 class MechanicLaborCost(Base):
     __tablename__ = "costs"
