@@ -247,6 +247,30 @@ class HavacProblemModel(Base):
         return f"{self.car.brand}-{self.car.model}-{self.description}"
 
 
+class BodyProblemModel(Base):
+    __tablename__ = "body_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String)
+    dents = Column(Boolean, default=False)
+    scratches = Column(Boolean, default=False)
+    rust = Column(Boolean, default=False)
+
+    main_problem_id = Column(
+        Integer,
+        ForeignKey(
+            "main_problems.id",
+        ),
+    )
+
+    main_prob = relationship(
+        "MainProblemModel",
+        backref=backref("body_problems", cascade="all, delete-orphan"),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
+
+
 # main problem model (this model will have relationship with all other problem models)
 class MainProblemModel(Base):
     __tablename__ = "main_problems"
