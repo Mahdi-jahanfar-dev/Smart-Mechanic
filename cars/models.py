@@ -146,6 +146,53 @@ class TransmissionMainProblemModel(Base):
     def __repr__(self):
         return f"{self.car.brand}-{self.car.model}-{self.description}"
 
+# brake problem model (for problems like squeaking noises, reduced responsiveness, etc.)
+class BrakeProblemModel(Base):
+    __tablename__ = "brake_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String)
+    squeaking_noises = Column(Boolean, default=False)
+    reduced_responsiveness = Column(Boolean, default=False)
+    vibration_when_braking = Column(Boolean, default=False)
+
+    main_problem_id = Column(
+        Integer,
+        ForeignKey(
+            "main_problems.id",
+        ),
+    )
+
+    main_prob = relationship(
+        "MainProblemModel",
+        backref=backref("brake_problems", cascade="all, delete-orphan"),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
+
+# wheel problem model (for problems like misalignment, wobbling, etc.)
+class WheelProblemModel(Base):
+    __tablename__ = "wheel_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String)
+    misalignment = Column(Boolean, default=False)
+    wobbling = Column(Boolean, default=False)
+    uneven_tire_wear = Column(Boolean, default=False)
+
+    main_problem_id = Column(
+        Integer,
+        ForeignKey(
+            "main_problems.id",
+        ),
+    )
+
+    main_prob = relationship(
+        "MainProblemModel",
+        backref=backref("wheel_problems", cascade="all, delete-orphan"),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
 
 # main problem model (this model will have relationship with all other problem models)
 class MainProblemModel(Base):
