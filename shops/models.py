@@ -34,6 +34,7 @@ class MechanicReservation(Base):
 # the price for each service
 class MechanicLaborCost(Base):
     __tablename__ = "costs"
+    id = Column(Integer, primary_key=True, autoincrement=True)
     rust = Column(Integer, default=0, nullable=False)
     scratches = Column(Integer, default=0, nullable=False)
     dents = Column(Integer, default=0, nullable=False)
