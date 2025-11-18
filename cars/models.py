@@ -196,6 +196,7 @@ class WheelProblemModel(Base):
     def __repr__(self):
         return f"{self.car.brand}-{self.car.model}-{self.description}"
 
+
 # electrical problem model (for problems like dead battery, faulty starter, etc.)
 class ElectricalProblemModel(Base):
     __tablename__ = "electrical_problems"
@@ -219,6 +220,32 @@ class ElectricalProblemModel(Base):
 
     def __repr__(self):
         return f"{self.car.brand}-{self.car.model}-{self.description}"
+
+
+# havac problem model (for problems like no cooling, strange noises, etc.)
+class HavacProblemModel(Base):
+    __tablename__ = "havac_problems"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String)
+    no_cooling = Column(Boolean, default=False)
+    strange_noises = Column(Boolean, default=False)
+    bad_odor = Column(Boolean, default=False)
+
+    main_problem_id = Column(
+        Integer,
+        ForeignKey(
+            "main_problems.id",
+        ),
+    )
+
+    main_prob = relationship(
+        "MainProblemModel",
+        backref=backref("havac_problems", cascade="all, delete-orphan"),
+    )
+
+    def __repr__(self):
+        return f"{self.car.brand}-{self.car.model}-{self.description}"
+
 
 # main problem model (this model will have relationship with all other problem models)
 class MainProblemModel(Base):
