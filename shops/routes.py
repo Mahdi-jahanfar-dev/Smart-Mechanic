@@ -8,10 +8,11 @@ from .schema import (
     MechanicDetailSchema,
     MechanicResevationCreateSchema,
     MechanicChooseStatusSchema,
+    MechanicLaborCostSchema
 )
 from typing import List
 from sqlalchemy.orm import Session
-from .models import MechanicShop, MechanicReservation
+from .models import MechanicShop, MechanicReservation, MechanicLaborCost
 from core.database_config import get_db
 from sqlalchemy.exc import IntegrityError  # using for unique errors in db
 from cars.models import Car
@@ -186,3 +187,17 @@ async def user_reservations_list(
     reservations = db.query(MechanicReservation).filter_by(user_id=user_id).all()
 
     return reservations
+
+@router.post("/prices/submit")
+async def submit_prices(
+    data: MechanicLaborCostSchema,
+    user_id: int = Depends(get_authenticated_user),
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter_by(id = user_id).first()
+    if user.is_mechanic:
+        new_prices = MechanicLaborCost(**data.model_dump())
+        db.add(new_prices)
+        db.commit()
+        return {"message": "prices updated successfully"}
+    return {"error": "user most be mechanic"}
