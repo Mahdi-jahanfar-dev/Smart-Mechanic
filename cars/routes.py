@@ -15,7 +15,7 @@ router = APIRouter(prefix="/cars", tags=["cars"])
 
 # this route will register the user cars
 @router.post("/register")
-async def car_register(
+def car_register(
     data: CarRegisterSchema,
     db: Session = Depends(get_db),
     user_id: int = Depends(get_authenticated_user),
@@ -42,7 +42,7 @@ async def car_register(
 
 # this route will show the list of user cars
 @router.get("/list")
-async def cars_list_route(
+def cars_list_route(
     db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)
 ):
     cars = db.query(Car).filter_by(user_id=user_id).all()
@@ -51,7 +51,7 @@ async def cars_list_route(
 
 # with this route user will accept repairing if car repaired
 @router.post("/accept-repair/{reservation_id}")
-async def accept_repair_route(
+def accept_repair_route(
     reservation_id: int,
     data: AcceptCarRepairSchema,
     db: Session = Depends(get_db),

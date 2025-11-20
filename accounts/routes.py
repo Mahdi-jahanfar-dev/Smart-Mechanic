@@ -16,7 +16,7 @@ router = APIRouter(prefix="/account", tags=["account"])
 
 # register user route
 @router.post("/register")
-async def user_register(data: UserRegisterSchema, db: Session = Depends(get_db)):
+def user_register(data: UserRegisterSchema, db: Session = Depends(get_db)):
 
     user = User(
         username=data.username,
@@ -40,7 +40,7 @@ async def user_register(data: UserRegisterSchema, db: Session = Depends(get_db))
 
 # login user route
 @router.post("/login")
-async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
+def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
 
     user = db.query(User).filter_by(username=data.username).first()
 
@@ -61,7 +61,7 @@ async def user_login(data: UserLoginSchema, db: Session = Depends(get_db)):
 
 # get access token from refresh token
 @router.post("/token/refresh")
-async def refresh_token(user_id: int = Depends(get_access_token)):
+def refresh_token(user_id: int = Depends(get_access_token)):
 
     access_token = generate_jwt_access_token(user_id)
 
