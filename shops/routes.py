@@ -23,7 +23,7 @@ router = APIRouter(prefix="/shops", tags=["mechanic-shops"])
 
 # this route will return list of mechanic shops
 @router.get("/list", response_model=List[MechanicShopsListSchema])
-async def shops_list(
+def shops_list(
     db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)
 ):
     shops = db.query(MechanicShop).all()
@@ -32,7 +32,7 @@ async def shops_list(
 
 # this route will return mechanic detail
 @router.get("/{shop_id}", response_model=MechanicDetailSchema)
-async def shop_detail(
+def shop_detail(
     shop_id: int,
     db: Session = Depends(get_db),
     user_id: int = Depends(get_authenticated_user),
@@ -47,7 +47,7 @@ async def shop_detail(
 
 # this route will create mechanic shop if user.is_mechanic
 @router.post("/create")
-async def create_mechanic_shop(
+def create_mechanic_shop(
     data: MechanicCreateSchema,
     db: Session = Depends(get_db),
     user_id: int = Depends(get_authenticated_user),
@@ -76,7 +76,7 @@ async def create_mechanic_shop(
 
 # this route create a reservation for users
 @router.post("/reservation/registration")
-async def resevation_create_route(
+def resevation_create_route(
     data: MechanicResevationCreateSchema,
     db: Session = Depends(get_db),
     user_id: int = Depends(get_authenticated_user),
@@ -123,7 +123,7 @@ async def resevation_create_route(
 
 # this route will show the reservation list for each mechanic shop
 @router.get("/resevations/{shop_id}")
-async def resevation_list_route(
+def resevation_list_route(
     shop_id: int,
     db: Session = Depends(get_db),
     user_id: int = Depends(get_authenticated_user),
@@ -135,7 +135,7 @@ async def resevation_list_route(
 
 # this route will change reservation status
 @router.post("/reservation/status/{reservation_id}")
-async def reservation_choose_status_route(
+def reservation_choose_status_route(
     reservation_id: int,
     data: MechanicChooseStatusSchema,
     db: Session = Depends(get_db),
@@ -172,7 +172,7 @@ async def reservation_choose_status_route(
 
 # this function will show users reservations
 @router.get("/user/reservations")
-async def user_reservations_list(
+def user_reservations_list(
     db: Session = Depends(get_db), user_id: int = Depends(get_authenticated_user)
 ):
 
@@ -189,7 +189,7 @@ async def user_reservations_list(
     return reservations
 
 @router.post("/prices/submit")
-async def submit_prices(
+def submit_prices(
     data: MechanicLaborCostSchema,
     user_id: int = Depends(get_authenticated_user),
     db: Session = Depends(get_db)
