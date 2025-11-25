@@ -31,6 +31,7 @@ class MechanicReservation(Base):
     rating = Column(Integer)
     description = Column(Text)
 
+# price model
 class ServicePrice(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     group_name = Column(String)
